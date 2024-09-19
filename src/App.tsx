@@ -2,15 +2,18 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { Text, Switch, Stack } from "@chakra-ui/react";
+import { Text, Switch, Stack, useColorMode } from "@chakra-ui/react";
 
 function App() {
   const [count, setCount] = useState(0);
-
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
       <Stack align="center" direction="row">
-        <Switch></Switch>
+        <Switch
+          isChecked={colorMode === "dark" ? true : false}
+          onChange={toggleColorMode}
+        ></Switch>
         <Text>dark mode</Text>
       </Stack>
 
