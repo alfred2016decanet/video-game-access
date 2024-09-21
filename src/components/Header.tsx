@@ -1,16 +1,12 @@
-import {
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Stack,
-  Switch,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
-import { CiSearch } from "react-icons/ci";
+import { Stack, Switch, Text, useColorMode } from "@chakra-ui/react";
 import reactLogo from "../assets/react.svg";
+import SearchForm from "./SearchForm";
 
-const Header = () => {
+interface Props {
+  onSearch: (searchValue: string) => void;
+}
+
+const Header = ({ onSearch }: Props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Stack align="center" direction="row">
@@ -18,12 +14,8 @@ const Header = () => {
         <img src={reactLogo} className="logo react" alt="React logo" />
       </a>
 
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <CiSearch color="gray.300" />
-        </InputLeftElement>
-        <Input type="tel" placeholder="search games..." />
-      </InputGroup>
+      <SearchForm onSearch={onSearch} />
+
       <Switch
         isChecked={colorMode === "dark" ? true : false}
         onChange={toggleColorMode}

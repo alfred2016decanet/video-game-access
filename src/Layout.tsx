@@ -5,9 +5,16 @@ import { useState } from "react";
 import { Genre } from "./services/genre-service";
 
 function Layout() {
-  const [currentGenre, currentGenre] = useState<Genre | null>(null);
+  const [currentGenre, setCurrentGenre] = useState<Genre | null>(null);
+  const [currentSearchValue, setCurrentSearchValue] = useState("");
+  const handleSelectGenre = (genre: Genre) => {
+    setCurrentGenre(genre);
+  };
 
-  const handleSelectGenre = (genre: Genre) => {};
+  const handleSearch = (searchValue: string) => {
+    setCurrentSearchValue(searchValue);
+  };
+
   return (
     <Grid
       templateAreas={`"header header"
@@ -22,7 +29,7 @@ function Layout() {
       width="100%"
     >
       <GridItem pl="2" bg="orange.300" area={"header"}>
-        <Header />
+        <Header onSearch={handleSearch} />
       </GridItem>
       <GridItem pl="2" bg="pink.300" area={"nav"}>
         <GenreList

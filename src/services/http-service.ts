@@ -4,6 +4,13 @@ interface Entity {
     id: number;
 }
 
+export interface ResultType<T> {
+    code: number;
+    next: string | null;
+    previous: number | null;
+    results: T;
+}
+
 class HttpService {
     endpoint: string;
 
@@ -12,7 +19,7 @@ class HttpService {
     }
     getAll<T>() {
         const controller = new AbortController();
-        const request = apiClient.get<T[]>(this.endpoint, {
+        const request = apiClient.get<ResultType<T[]>>(this.endpoint, {
             signal: controller.signal,
         });
 
