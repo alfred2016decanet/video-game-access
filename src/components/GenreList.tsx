@@ -13,10 +13,10 @@ import {
 
 interface Props {
   onSelectGenre: (genre: Genre) => void;
-  selectedGenre: Genre | null;
 }
 
-const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
+const GenreList = ({ onSelectGenre }: Props) => {
+  const [currentGenre, setCurrentGenre] = useState<Genre | null>(null);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,8 +60,11 @@ const GenreList = ({ selectedGenre, onSelectGenre }: Props) => {
               <Button
                 whiteSpace="normal"
                 textAlign="left"
-                fontWeight={genre.id === selectedGenre?.id ? "bold" : "normal"}
-                onClick={() => onSelectGenre(genre)}
+                fontWeight={genre.id === currentGenre?.id ? "bold" : "normal"}
+                onClick={() => {
+                  setCurrentGenre({ ...genre });
+                  onSelectGenre(genre);
+                }}
                 fontSize="md"
                 variant="link"
               >

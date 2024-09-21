@@ -17,10 +17,14 @@ class HttpService {
     constructor(endpoint: string) {
         this.endpoint = endpoint;
     }
-    getAll<T>() {
+    getAll<T>(params: Record<string, any> = {}) {
         const controller = new AbortController();
         const request = apiClient.get<ResultType<T[]>>(this.endpoint, {
             signal: controller.signal,
+            params: {
+                ...apiClient.defaults.params,  // Fusionne les paramètres par défaut
+                ...params,                     // Ajoute ou remplace avec les paramètres dynamiques
+            }
         });
 
         return { request, cancel: () => controller.abort() }
@@ -37,10 +41,7 @@ class HttpService {
 
     delete<T extends Entity>(item: Entity) {
         return apiClient.delete<T>(this.endpoint + '/' + item.id);
-
     }
-
-
 }
 
 const create = (endpoint: string) => new HttpService(endpoint);
