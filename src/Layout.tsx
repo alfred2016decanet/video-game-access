@@ -3,16 +3,45 @@ import Header from "./components/Header";
 import GenreList from "./components/GenreList";
 import { useState } from "react";
 import { Genre } from "./services/genre-service";
+import GameContent from "./components/GameContent";
+import { PlatForm } from "./services/platform-service";
+
+interface GameQueryVars {
+  genre: Genre | null;
+  platform: PlatForm | null;
+  sort: string;
+  search: string;
+}
 
 function Layout() {
   const [currentGenre, setCurrentGenre] = useState<Genre | null>(null);
-  const [currentSearchValue, setCurrentSearchValue] = useState("");
+  const [gameQuery, setGameQuery] = useState<GameQueryVars>({
+    genre: null,
+    platform: null,
+    sort: "",
+    search: "",
+  });
+
   const handleSelectGenre = (genre: Genre) => {
-    setCurrentGenre(genre);
+    setCurrentGenre({ ...genre });
+    setGameQuery({ ...gameQuery, genre });
   };
 
+  const title =
+    (gameQuery.genre ? gameQuery.genre.name + " " : "") +
+    (gameQuery.platform ? gameQuery.platform.name : "");
+
   const handleSearch = (searchValue: string) => {
-    setCurrentSearchValue(searchValue);
+    setGameQuery({ ...gameQuery, search: searchValue });
+  };
+
+  const handleSelectPlatform = (platform: PlatForm) => {
+    // TODO
+    setGameQuery({ ...gameQuery, platform });
+  };
+  const handleSelectOrdering = (order: string) => {
+    //TODO
+    setGameQuery({ ...gameQuery, sort: order });
   };
 
   return (
@@ -38,7 +67,11 @@ function Layout() {
         />
       </GridItem>
       <GridItem pl="2" bg="green.300" area={"main"}>
-        Main
+        <GameContent
+          onSelectOrdering={handleSelectOrdering}
+          onSelectPlatform={handleSelectPlatform}
+          title={title}
+        />
       </GridItem>
       <GridItem pl="2" bg="blue.300" area={"footer"}>
         Intégration réalisé par Luc Alfred MBIDA
