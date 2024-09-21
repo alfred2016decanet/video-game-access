@@ -1,4 +1,11 @@
-import { Box, Button, Heading, SimpleGrid, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Heading,
+  SimpleGrid,
+  Spinner,
+} from "@chakra-ui/react";
 import GameFilters from "./GameFilters";
 import { PlatForm } from "../services/platform-service";
 import { useEffect, useState } from "react";
@@ -11,6 +18,14 @@ interface Props {
   onSelectPlatform: (platform: PlatForm) => void;
   onSelectOrdering: (order: string) => void;
   onLoadMore: () => void;
+}
+
+interface GameQueryParams {
+  genres?: number;
+  platforms?: number;
+  search?: string;
+  sort?: string;
+  page?: number;
 }
 
 const GameContent = ({
@@ -28,14 +43,14 @@ const GameContent = ({
     (gameQuery.platform ? gameQuery.platform.name : "");
 
   useEffect(() => {
-    const params = {};
+    const params: GameQueryParams = {};
 
     if (gameQuery.genre) {
-      params.genre = gameQuery.genre.id;
+      params.genres = gameQuery.genre.id;
     }
 
     if (gameQuery.platform) {
-      params.platform = gameQuery.platform.id;
+      params.platforms = gameQuery.platform.id;
     }
 
     if (gameQuery.search) {
@@ -74,7 +89,9 @@ const GameContent = ({
     <>
       {errorMessage}
       <Box paddingLeft={2}>
-        <Heading as="h1">{title} Games</Heading>
+        <Heading as="h1" marginTop={9} marginBottom={3}>
+          {title} Games
+        </Heading>
         <GameFilters
           onSelectPlatform={onSelectPlatform}
           onSelectOrdering={onSelectOrdering}
@@ -88,12 +105,19 @@ const GameContent = ({
         {games.map((game) => (
           <GameCard game={game} key={game.id} />
         ))}
-        {nextPage && (
-          <Button onClick={onLoadMore}>
+      </SimpleGrid>
+      {nextPage && (
+        <Center>
+          <Button
+            onClick={() => {
+              setLoading(true);
+              onLoadMore();
+            }}
+          >
             {loading ? <Spinner /> : "Load More"}
           </Button>
-        )}
-      </SimpleGrid>
+        </Center>
+      )}
     </>
   );
 };

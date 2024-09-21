@@ -3,7 +3,6 @@ import { useRef } from "react";
 import { CiSearch } from "react-icons/ci";
 
 interface Props {
-  searchValue: string;
   onSearch: (searchValue: string) => void;
 }
 const SearchForm = ({ onSearch }: Props) => {
